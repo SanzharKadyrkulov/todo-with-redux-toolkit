@@ -1,25 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import CreateTodo from './components/CreateTodo';
+import OneTodo from './components/OneTodo';
+import { useActions } from './hooks/useActions';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	const { todos } = useSelector((store) => store.todo);
+	const { getTodos } = useActions();
+
+	useEffect(() => {
+		getTodos();
+	}, []);
+
+	return (
+		<div className='py-10 bg-zinc-900 h-screen'>
+			<div className='text-white w-4/5 mx-auto'>
+				<h1 className='text-2xl font-bold text-center mb-10'>Todo list</h1>
+				<CreateTodo />
+				{todos.map((todo) => (
+					<OneTodo key={todo.id} todo={todo} />
+				))}
+			</div>
+		</div>
+	);
 }
 
 export default App;
